@@ -7,8 +7,11 @@ public class Tile extends Button {
 
     Tile(){
         super();
-        setMinWidth(size);
-        setMinHeight(size);
+
+        getStyleClass().add("default_tile");
+        setFocusTraversable(false);
+        setPrefWidth(size);
+        setPrefHeight(size);
         state = State.DEFAULT;
         isBomb = false;
     }

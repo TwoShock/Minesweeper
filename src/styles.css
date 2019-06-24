@@ -1,0 +1,8 @@
+.default_tile{
+    -fx-background-color:rgb(221,221,221);
+    -fx-border-color:white;
+    -fx-border-width:1px;
+}
+.default_tile:hover{
+    -fx-background-color:rgb(241, 241, 241);
+}
