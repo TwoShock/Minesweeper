@@ -19,7 +19,7 @@ public class Main extends Application {
         intializeStage(primaryStage);
     }
     void initializeLayout(){
-        grid = new Grid(9);
+        grid = new Grid(9,10);
         mainLayout = new BorderPane();
 
         MenuBar menuBar = new MenuBar();
