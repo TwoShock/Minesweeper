@@ -3,13 +3,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 
 
 public class Main extends Application {
-    private StackPane root = new StackPane();
     private Grid grid;
     private BorderPane mainLayout;
     private Scene mainScene;
@@ -36,7 +34,7 @@ public class Main extends Application {
         mainLayout.setTop(menuBar);
 
         mainScene = new Scene(mainLayout);
-        mainScene.getStylesheets().add("styles.css");
+        mainScene.getStylesheets().add("assets/styles.css");
     }
     void intializeStage(Stage stage){
         stage.setTitle("Minesweeper");

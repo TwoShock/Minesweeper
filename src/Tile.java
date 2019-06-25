@@ -1,6 +1,9 @@
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 
 public class Tile extends Button {
     private boolean tileInfo;
@@ -15,7 +18,21 @@ public class Tile extends Button {
         setPrefHeight(size);
         state = State.DEFAULT;
         tileInfo = false;
-        //need to set on action
+
+        setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (event.getButton() == MouseButton.SECONDARY){
+                    if (state.equals(State.DEFAULT)) {
+                        setFlag();
+                    }
+                    else {
+                        setGraphic(null);
+                        state = State.DEFAULT;
+                    }
+                }
+            }
+        });
     }
     State getState(){
         return state;
@@ -25,6 +42,15 @@ public class Tile extends Button {
     }
     boolean isBomb(){
         return tileInfo;
+    }
+    void setFlag(){
+        Image flag = new Image(getClass().getResourceAsStream("assets/flag.png"));
+        ImageView imageView = new ImageView(flag);
+
+        imageView.setFitHeight(size/2);
+        imageView.setFitWidth(size/2);
+        setGraphic(imageView);
+        state = State.FLAGGED;
     }
 
 }
