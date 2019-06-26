@@ -1,5 +1,8 @@
+import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
 import java.util.ArrayList;
@@ -17,8 +20,9 @@ public class Grid extends GridPane {
         this.bombCount = bombCount;
         intializeGrid();
         placeBombs();
-        getTileAtPosition(0,0).setBomb(true);
+        getTileAtPosition(0,0).setBomb();
         placeNumbers();
+        printGrid();
 
     }
     Tile getTileAtPosition(int i,int j){
@@ -30,8 +34,8 @@ public class Grid extends GridPane {
                 int currentNeighbourCount = getNeighbourBombCount(i,j);
                 Number currentNumber = new Number(currentNeighbourCount);
                 if (currentNeighbourCount > 0 ){
-                    getTileAtPosition(i,j).setText(currentNumber.getCount());
-                    getTileAtPosition(i,j).setStyle(currentNumber.getStyle()+" -fx-font-weight:bold");
+                    getTileAtPosition(i,j).setNumber(currentNeighbourCount);
+                    getTileAtPosition(i,j).setTileType(TileType.NUMBER);
                 }
             }
         }
@@ -59,17 +63,29 @@ public class Grid extends GridPane {
                 Tile currentTile = new Tile();
                 currentList.add(currentTile);
                 add(currentTile,i,j);
+                final int x  = j;
+                final int y = i;
+                currentTile.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        if (event.getButton() == MouseButton.PRIMARY){
+                            if (currentTile.isBomb()){
+                                gameOver();
+                            }
+                            else{
+                                reveal(x,y);
+                            }
+                        }
+                        else if(event.getButton().equals(MouseButton.SECONDARY)){
+                            currentTile.displayFlag();
+                        }
+                    }
+                });
             }
         }
     }
-    void setBomb(int i,int j){
-        Image flag = new Image(getClass().getResourceAsStream("assets/bomb.png"));
-        ImageView imageView = new ImageView(flag);
-
-        imageView.setFitHeight(40/2);
-        imageView.setFitWidth(40/2);
-        getTileAtPosition(i,j).setGraphic(imageView);
-
+    void gameOver(){
+        System.out.println("GAME OVA");
     }
 
     void placeBombs(){
@@ -80,9 +96,53 @@ public class Grid extends GridPane {
             int j = random.nextInt(gridSize);
             if(!getTileAtPosition(i,j).isBomb()){
                 tempBombCount--;
-                setBomb(i,j);
-                getTileAtPosition(i,j).setBomb(true);
+                getTileAtPosition(i,j).setBomb();
             }
         }
+    }
+    void printGrid(){
+        for (int i = 0; i < gridSize;i++ ){
+            for (int j = 0;j<gridSize;j++){
+                if (getTileAtPosition(i,j).isBomb())
+                    System.out.print("b ");
+                else if(getTileAtPosition(i,j).getTileType() == TileType.EMPTY)
+                    System.out.print("0 ");
+                else if(getTileAtPosition(i,j).getTileType() == TileType.NUMBER)
+                    System.out.print(getTileAtPosition(i,j).getNumber()+" ");
+            }
+            System.out.println();
+        }
+    }
+    void reveal(int i,int j){
+        if(i == gridSize)
+            return;
+        if (j == gridSize)
+            return;
+        if (i == -1)
+            return;
+        if (j == -1)
+            return;
+        Tile currentTile = getTileAtPosition(i,j);
+        if (currentTile.getState().equals(State.OPENED)){
+            return;
+        }
+        if (currentTile.isEmpty()) {
+            currentTile.setState(State.OPENED);
+            currentTile.setDisable(true);
+        }
+        if (currentTile.isNumber()){
+            currentTile.displayNumber();
+            currentTile.setState(State.OPENED);
+            currentTile.setDisable(true);
+            return;
+        }
+            reveal(i+1,j+1);
+            reveal(i+1,j);
+            reveal(i+1,j-1);
+            reveal(i,j+1);
+            reveal(i,j-1);
+            reveal(i-1,j+1);
+            reveal(i-1,j);
+            reveal(i-1,j-1);
     }
 }

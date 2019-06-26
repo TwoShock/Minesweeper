@@ -1,3 +1,3 @@
 public enum State {
-    DEFAULT,FLAGGED,CLEAR
+    DEFAULT,FLAGGED,OPENED
 }
