@@ -86,7 +86,7 @@ public class Tile extends Button {
             setGraphic(imageView);
             state = State.FLAGGED;
         }
-        else {
+        else if(state.equals(State.FLAGGED)) {
             setGraphic(null);
             state = State.DEFAULT;
         }

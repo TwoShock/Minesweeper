@@ -104,26 +104,34 @@ public class Grid extends GridPane {
             }
         }
         else if(event.getButton().equals(MouseButton.SECONDARY)){
-            if (!(flagCount == bombCount)){
-                currentTile.toggleFlag();
-                flagCount++;
-            }
-            else if(flagCount == bombCount){
-                if (currentTile.getState().equals(State.FLAGGED)) {
-                    currentTile.toggleFlag();
-                    flagCount--;
-                }
-            }
+           if (flagCount < bombCount){
+               if (currentTile.getState().equals(State.FLAGGED)){
+                   flagCount--;
+               }
+               else{
+                   flagCount++;
+               }
+               currentTile.toggleFlag();
+           }
+           else if(flagCount == bombCount && currentTile.getState().equals(State.FLAGGED)) {
+               currentTile.toggleFlag();
+               flagCount--;
+           }
         }
     }
 
     void gameOver(){
         for (int i = 0;i < gridSize;i++){
             for (int j = 0;j < gridSize;j++){
-                getTileAtPosition(i,j).displayTile();
+                Tile currentTile = getTileAtPosition(i,j);
+                if (currentTile.getState().equals(State.FLAGGED))
+                    currentTile.toggleFlag();
+                currentTile.displayTile();
+                currentTile.setState(State.OPENED);
             }
         }
         this.gameState = true;
+        this.flagCount = 0;
     }
 
     void placeBombs(){

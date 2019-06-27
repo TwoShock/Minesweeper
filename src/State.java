@@ -1,3 +1,4 @@
-public enum State {
+public enum
+State {
     DEFAULT,FLAGGED,OPENED
 }
