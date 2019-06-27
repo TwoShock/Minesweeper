@@ -1,8 +1,17 @@
+*{
+    -fx-font-family:Helvetica;
+}
+
 .default_tile{
-    -fx-background-color:rgb(221,221,221);
+    -fx-background-color:rgb(200,200,200);
     -fx-border-color:white;
     -fx-border-width:1px;
 }
 .default_tile:hover{
-    -fx-background-color:rgb(241, 241, 241);
+    -fx-background-color:#e0e0e0;
+}
+.default_tile:disabled{
+    -fx-opacity:1;
+    -fx-font-weight:bold;
+    -fx-background-color:#e0e0e0;
 }

@@ -22,8 +22,8 @@ public class Tile extends Button {
         Image flag = new Image(getClass().getResourceAsStream("assets/bomb.png"));
         ImageView imageView = new ImageView(flag);
 
-        imageView.setFitHeight(40/2);
-        imageView.setFitWidth(40/2);
+        imageView.setFitHeight(size/2);
+        imageView.setFitWidth(size/2);
         setGraphic(imageView);
 
     }
@@ -42,8 +42,13 @@ public class Tile extends Button {
         Number number = new Number(this.number);
         setText(number.getCount());
         setStyle(number.getStyle());
+        setState(State.OPENED);
+        setDisable(true);
     }
-
+    void displayEmpty(){
+            setState(State.OPENED);
+            setDisable(true);
+    }
     public void setNumber(int number) {
         this.number = number;
     }
@@ -71,8 +76,8 @@ public class Tile extends Button {
     boolean isBomb(){
         return tileType == TileType.BOMB;
     }
-    void displayFlag(){
-        if(state == State.DEFAULT) {
+    void toggleFlag(){
+        if(state.equals(State.DEFAULT)) {
             Image flag = new Image(getClass().getResourceAsStream("assets/flag.png"));
             ImageView imageView = new ImageView(flag);
 
@@ -86,5 +91,23 @@ public class Tile extends Button {
             state = State.DEFAULT;
         }
     }
-
+    void resetTile() {
+        setState(State.DEFAULT);
+        setTileType(TileType.EMPTY);
+        setDisable(false);
+        setGraphic(null);
+        setText("");
+        setStyle(".default_tile");
+    }
+    void displayTile(){
+        if (tileType.equals(TileType.NUMBER)){
+            displayNumber();
+        }
+        if(tileType.equals(TileType.BOMB)){
+            displayBomb();
+        }
+        if (tileType.equals(TileType.EMPTY)){
+            displayEmpty();
+        }
+    }
 }

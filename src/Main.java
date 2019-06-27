@@ -1,7 +1,10 @@
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -15,6 +18,15 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         initializeLayout();
         intializeStage(primaryStage);
+        mainScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (event.getCode().equals(KeyCode.ENTER) && grid.isGameOver()){
+                    grid.newGame();
+                }
+
+            }
+        });
     }
     void initializeLayout(){
         grid = new Grid(8,10);
