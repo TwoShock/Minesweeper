@@ -150,13 +150,31 @@ public class Grid extends GridPane {
     void placeBombs(int x, int y){
         int tempBombCount = bombCount;
         Random random = new Random();
+        boolean cornerCase = (x == 0 && y == 0|| x == 0 && y == gridSize-1 || x == gridSize-1 && y == 0 || x == gridSize-1 && y == gridSize - 1 );
         while (tempBombCount > 0){
             int i = random.nextInt(gridSize);
             int j = random.nextInt(gridSize);
-            if(i == x+1 && j == y+1 || i == x+1 && j == y || i == x+1 && j == y-1
-            ||i == x && j == y+1 || i == x && j == y || i == x && j == y-1 || i == x-1 &&
-            j == y-1 || i == x-1 && y ==j|| i == x-1 && j == y+1 )
-                continue;
+            boolean surrondingTiles = (i == x+1 && j == y+1 ||
+                    i == x+1 && j == y || i == x+1 &&
+                    j == y-1 ||i == x && j == y+1 || i == x && j == y || i == x &&
+                    j == y-1 || i == x-1 && j == y-1 || i == x-1 && y ==j|| i == x-1 && j == y+1);
+
+            boolean surrondingCornerTiles = (surrondingTiles || i == x && j == y+2 || i == x+1 && j == y+2||
+                    i == x+2 && j == y || i == x+2 && j == y+1 || i == x+2 && j == y+2 || i == x && j == y-2 ||
+                    i == x+1 && j == y-2 || i == x+2 && y ==j || i == x+2 && j == y-1 || i == x+2 && j == y-2
+                    || i == x-1 && j == y+2 || i == x-2 && j == y || i == x-2 && j == y+1 ||i == x-2 && j == y+2
+                    ||i == x-1 && j == y-2  || i == x-2 && j == y-1 || i == x-2 && j == y-2
+            );
+
+            if (cornerCase){
+                if (surrondingCornerTiles) {
+                    continue;
+                }
+            }
+            if (surrondingTiles){
+              continue;
+            }
+
             if(!getTileAtPosition(i,j).isBomb()){
                 tempBombCount--;
                 getTileAtPosition(i,j).setBomb();
@@ -177,7 +195,7 @@ public class Grid extends GridPane {
         }
     }
 
-    void reveal(int i,int j){//when u reveal u should remove flags before revealing valid tiles
+    void reveal(int i,int j){
         if(i == gridSize || j == gridSize || i == -1 || j == -1)
             return;
         Tile currentTile = getTileAtPosition(i,j);

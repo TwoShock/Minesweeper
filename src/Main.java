@@ -36,7 +36,6 @@ public class Main extends Application {
             grid.getChildren().get(i).setOnMouseClicked(e->{
                 int y = (int) tempI/grid.getGridSize();
                 int x = (int) tempI % grid.getGridSize();
-                System.out.println(x+" "+y);
                 grid.handleUserInput(e,x,y);
 
             });
