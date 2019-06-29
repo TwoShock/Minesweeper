@@ -42,7 +42,7 @@ public class Main extends Application {
         }
     }
     void initializeLayout(){
-        grid = new Grid(16,40);
+        grid = new Grid(8,10);
         mainLayout = new BorderPane();
 
         MenuBar menuBar = new MenuBar();

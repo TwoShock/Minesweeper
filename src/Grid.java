@@ -154,7 +154,7 @@ public class Grid extends GridPane {
         boolean leftEdgeCase = (y == 0);
         boolean rightEdgeCase = (y == gridSize-1);
         boolean topEdgeCase = (x == 0);
-        boolean bottomEdgeCase  = (x == gridSize);
+        boolean bottomEdgeCase  = (x == gridSize-1);
         while (tempBombCount > 0){
             int i = random.nextInt(gridSize);
             int j = random.nextInt(gridSize);
