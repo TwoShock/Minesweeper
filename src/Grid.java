@@ -151,6 +151,10 @@ public class Grid extends GridPane {
         int tempBombCount = bombCount;
         Random random = new Random();
         boolean cornerCase = (x == 0 && y == 0|| x == 0 && y == gridSize-1 || x == gridSize-1 && y == 0 || x == gridSize-1 && y == gridSize - 1 );
+        boolean leftEdgeCase = (y == 0);
+        boolean rightEdgeCase = (y == gridSize-1);
+        boolean topEdgeCase = (x == 0);
+        boolean bottomEdgeCase  = (x == gridSize);
         while (tempBombCount > 0){
             int i = random.nextInt(gridSize);
             int j = random.nextInt(gridSize);
@@ -165,11 +169,26 @@ public class Grid extends GridPane {
                     || i == x-1 && j == y+2 || i == x-2 && j == y || i == x-2 && j == y+1 ||i == x-2 && j == y+2
                     ||i == x-1 && j == y-2  || i == x-2 && j == y-1 || i == x-2 && j == y-2
             );
-
             if (cornerCase){
                 if (surrondingCornerTiles) {
                     continue;
                 }
+            }
+            if (topEdgeCase){
+                if(i == x +2 && j == y || i == x+2 && j == y+1 || i == x+2 && j == y+2)
+                    continue;
+            }
+            if (rightEdgeCase){
+                if(i == x && j == y-2 || i == x+1 && j == y-2 || i == x-1 && j == y-2)
+                    continue;
+            }
+            if (bottomEdgeCase){
+                if (i == x-2 && j == y || i == x-2 && j == y+1 || i == x-2 &&j== y-1)
+                    continue;
+            }
+            if (leftEdgeCase){
+                if (i == x && j == y+2 || i == x-1 && j == y+2 || i == x+1 && j == y+2)
+                    continue;
             }
             if (surrondingTiles){
               continue;
@@ -181,6 +200,7 @@ public class Grid extends GridPane {
             }
         }
     }
+
     void printGrid(){
         for (int i = 0; i < gridSize;i++ ){
             for (int j = 0;j<gridSize;j++){
