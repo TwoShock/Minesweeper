@@ -41,7 +41,6 @@ public class Main extends Application {
 
             });
         }
-        //grid.printGrid();
     }
     void initializeLayout(){
         grid = new Grid(16,40);

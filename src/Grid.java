@@ -93,7 +93,6 @@ public class Grid extends GridPane {
                 Tile currentTile = new Tile();
                 currentList.add(currentTile);
                 add(currentTile,i,j);
-                //currentTile.setOnMouseClicked(e->{handleUserInput(e,currentTile,x,y);});
             }
         }
     }
@@ -108,7 +107,7 @@ public class Grid extends GridPane {
             printGrid();
         }
         if (event.getButton().equals(MouseButton.PRIMARY)){
-            if(!currentTile.getState().equals(State.FLAGGED)) {
+            if(!currentTile.getState().equals(State.FLAGGED) && !isGameOver()) {
                 if (currentTile.isBomb()) {
                     currentTile.setStyle("-fx-background-color:red");
                     gameOver();
