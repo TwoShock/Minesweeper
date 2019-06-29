@@ -11,6 +11,15 @@ public class Grid extends GridPane {
     private int bombCount;
     private int flagCount;
     private boolean gameState;
+    private boolean firstMove;
+
+    public void setFirstMove(boolean firstMove) {
+        this.firstMove = firstMove;
+    }
+
+    public boolean isFirstMove() {
+        return firstMove;
+    }
 
     public boolean isGameOver(){
         return gameState;
@@ -23,21 +32,16 @@ public class Grid extends GridPane {
         this.bombCount = bombCount;
         this.flagCount = 0;
         this.gameState = false;
+        this.firstMove = true;
         fillGrid();
     }
     void fillGrid(){
         intializeGrid();
-        placeBombs();
-        placeNumbers();
-        printGrid();
     }
     void newGame(){
         System.out.println();
         clearGrid();
-        placeBombs();
-        placeNumbers();
-        printGrid();
-
+        gameState = false;
     }
     void clearGrid() {
         for (int i = 0;i<gridSize;i++){
@@ -77,6 +81,10 @@ public class Grid extends GridPane {
         return neighbourBombCount;
     }
 
+    public int getGridSize() {
+        return gridSize;
+    }
+
     void intializeGrid(){
         for (int i = 0;i < gridSize;i++){
             ArrayList<Tile> currentList = new ArrayList<Tile>();
@@ -85,14 +93,20 @@ public class Grid extends GridPane {
                 Tile currentTile = new Tile();
                 currentList.add(currentTile);
                 add(currentTile,i,j);
-                final int x  = j;
-                final int y = i;
-                currentTile.setOnMouseClicked(e->{handleUserInput(e,currentTile,x,y);});
+                //currentTile.setOnMouseClicked(e->{handleUserInput(e,currentTile,x,y);});
             }
         }
     }
 
-    void handleUserInput(MouseEvent event,Tile currentTile,int i,int j){
+    void handleUserInput(MouseEvent event,int i,int j){
+        Tile currentTile = getTileAtPosition(i,j);
+        if (isFirstMove() && event.getButton().equals(MouseButton.PRIMARY)) {
+            placeBombs(i,j);
+            placeNumbers();
+            reveal(i,j);
+            setFirstMove(false);
+            printGrid();
+        }
         if (event.getButton().equals(MouseButton.PRIMARY)){
             if(!currentTile.getState().equals(State.FLAGGED)) {
                 if (currentTile.isBomb()) {
@@ -134,12 +148,16 @@ public class Grid extends GridPane {
         this.flagCount = 0;
     }
 
-    void placeBombs(){
+    void placeBombs(int x, int y){
         int tempBombCount = bombCount;
         Random random = new Random();
         while (tempBombCount > 0){
             int i = random.nextInt(gridSize);
             int j = random.nextInt(gridSize);
+            if(i == x+1 && j == y+1 || i == x+1 && j == y || i == x+1 && j == y-1
+            ||i == x && j == y+1 || i == x && j == y || i == x && j == y-1 || i == x-1 &&
+            j == y-1 || i == x-1 && y ==j|| i == x-1 && j == y+1 )
+                continue;
             if(!getTileAtPosition(i,j).isBomb()){
                 tempBombCount--;
                 getTileAtPosition(i,j).setBomb();

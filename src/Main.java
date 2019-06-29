@@ -5,6 +5,8 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -23,13 +25,26 @@ public class Main extends Application {
             public void handle(KeyEvent event) {
                 if (event.getCode().equals(KeyCode.ENTER) && grid.isGameOver()){
                     grid.newGame();
+                    grid.setFirstMove(true);
                 }
 
             }
         });
+
+        for (int i = 0;i < grid.getGridSize()*grid.getGridSize();i++){
+            final int tempI = i;
+            grid.getChildren().get(i).setOnMouseClicked(e->{
+                int y = (int) tempI/grid.getGridSize();
+                int x = (int) tempI % grid.getGridSize();
+                System.out.println(x+" "+y);
+                grid.handleUserInput(e,x,y);
+
+            });
+        }
+        //grid.printGrid();
     }
     void initializeLayout(){
-        grid = new Grid(8,10);
+        grid = new Grid(16,40);
         mainLayout = new BorderPane();
 
         MenuBar menuBar = new MenuBar();
