@@ -3,10 +3,9 @@ import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -25,7 +24,6 @@ public class Main extends Application {
             public void handle(KeyEvent event) {
                 if (event.getCode().equals(KeyCode.ENTER) && grid.isGameOver()){
                     grid.newGame();
-                    grid.setFirstMove(true);
                 }
 
             }
@@ -42,7 +40,7 @@ public class Main extends Application {
         }
     }
     void initializeLayout(){
-        grid = new Grid(8,10);
+        grid = new Grid(8,1);
         mainLayout = new BorderPane();
 
         MenuBar menuBar = new MenuBar();
@@ -51,9 +49,17 @@ public class Main extends Application {
         Menu help = new Menu("Help");
         Menu about = new Menu("About");
 
+        MenuItem rules = new MenuItem("Rules");
+        MenuItem eightByEight = new MenuItem("8 x 8");
+        MenuItem sixteenBySixteen = new MenuItem("16 x 16");
+        MenuItem twentyFourByTwentyFour = new MenuItem("24 x 24");
+
         menuBar.getMenus().add(newGame);
         menuBar.getMenus().add(help);
         menuBar.getMenus().add(about);
+
+        help.getItems().add(rules);
+        newGame.getItems().addAll(eightByEight,sixteenBySixteen,twentyFourByTwentyFour);
 
         mainLayout.setCenter(grid);
         mainLayout.setTop(menuBar);

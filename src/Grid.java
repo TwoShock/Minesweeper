@@ -1,3 +1,4 @@
+import javafx.scene.control.Alert;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -41,6 +42,8 @@ public class Grid extends GridPane {
     void newGame(){
         System.out.println();
         clearGrid();
+        flagCount = 0;
+        firstMove = true;
         gameState = false;
     }
     void clearGrid() {
@@ -96,7 +99,16 @@ public class Grid extends GridPane {
             }
         }
     }
-
+    int getOpenTileCount(){
+        int count = 0;
+        for (int i = 0;i < gridSize;i++){
+            for (int j = 0;j < gridSize;j++){
+                if (getTileAtPosition(i,j).getState().equals(State.OPENED))
+                    count++;
+            }
+        }
+        return count;
+    }
     void handleUserInput(MouseEvent event,int i,int j){
         Tile currentTile = getTileAtPosition(i,j);
         if (isFirstMove() && event.getButton().equals(MouseButton.PRIMARY)) {
@@ -130,6 +142,13 @@ public class Grid extends GridPane {
                currentTile.toggleFlag();
                flagCount--;
            }
+        }
+        if (getOpenTileCount() == gridSize*gridSize - bombCount){
+            Alert winPrompt = new Alert(Alert.AlertType.INFORMATION);
+            winPrompt.setHeaderText("Congratulations");
+            winPrompt.setContentText("You Win!");
+            winPrompt.showAndWait();
+            newGame();
         }
     }
 
