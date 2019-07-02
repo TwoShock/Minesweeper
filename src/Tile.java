@@ -5,7 +5,7 @@ import javafx.scene.image.ImageView;
 public class Tile extends Button {
     private TileType tileType;
     private State state;
-    private final int size = 40;
+    private int size = 40;
     private int number;
 
     public int getNumber() {
@@ -22,8 +22,8 @@ public class Tile extends Button {
         Image flag = new Image(getClass().getResourceAsStream("assets/bomb.png"));
         ImageView imageView = new ImageView(flag);
 
-        imageView.setFitHeight(size/2);
-        imageView.setFitWidth(size/2);
+        imageView.setFitHeight(size/3);
+        imageView.setFitWidth(size/3);
         setGraphic(imageView);
 
     }
@@ -62,6 +62,11 @@ public class Tile extends Button {
         state = State.DEFAULT;
         tileType = TileType.EMPTY;
     }
+    void changeTileSize(int newSize){
+        this.size = newSize;
+        setPrefHeight(newSize);
+        setPrefWidth(newSize);
+    }
     State getState(){
         return state;
     }
@@ -81,8 +86,8 @@ public class Tile extends Button {
             Image flag = new Image(getClass().getResourceAsStream("assets/flag.png"));
             ImageView imageView = new ImageView(flag);
 
-            imageView.setFitHeight(size / 2);
-            imageView.setFitWidth(size / 2);
+            imageView.setFitHeight(size / 3);
+            imageView.setFitWidth(size / 3);
             setGraphic(imageView);
             state = State.FLAGGED;
         }

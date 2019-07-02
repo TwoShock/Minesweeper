@@ -15,6 +15,7 @@ public class Main extends Application {
     private Grid grid;
     private BorderPane mainLayout;
     private Scene mainScene;
+    private MenuBar menuBar;
     @Override
     public void start(Stage primaryStage) throws Exception {
         initializeLayout();
@@ -29,6 +30,12 @@ public class Main extends Application {
             }
         });
 
+        addListenersToTiles();
+        System.out.println(primaryStage.getWidth());
+        System.out.println(primaryStage.getHeight());
+        hookUpMenus(primaryStage);
+    }
+    void addListenersToTiles(){
         for (int i = 0;i < grid.getGridSize()*grid.getGridSize();i++){
             final int tempI = i;
             grid.getChildren().get(i).setOnMouseClicked(e->{
@@ -40,14 +47,27 @@ public class Main extends Application {
         }
     }
     void initializeLayout(){
-        grid = new Grid(8,1);
+        grid = new Grid(8,10);
         mainLayout = new BorderPane();
+        mainLayout.setCenter(grid);
+        mainScene = new Scene(mainLayout);
+        mainScene.getStylesheets().add("assets/styles.css");
 
-        MenuBar menuBar = new MenuBar();
+    }
+    void intializeStage(Stage stage){
+        stage.setTitle("Minesweeper");
+        stage.setScene(mainScene);
+        stage.show();
+        stage.setResizable(false);
+    }
+    void hookUpMenus(Stage stage){
+        menuBar = new MenuBar();
 
         Menu newGame = new Menu("New");
         Menu help = new Menu("Help");
         Menu about = new Menu("About");
+
+        MenuItem developerMenu = new Menu("Developers");
 
         MenuItem rules = new MenuItem("Rules");
         MenuItem eightByEight = new MenuItem("8 x 8");
@@ -58,20 +78,39 @@ public class Main extends Application {
         menuBar.getMenus().add(help);
         menuBar.getMenus().add(about);
 
+        about.getItems().add(developerMenu);
+
         help.getItems().add(rules);
         newGame.getItems().addAll(eightByEight,sixteenBySixteen,twentyFourByTwentyFour);
+        eightByEight.setOnAction(e->{
+            grid = new Grid(8,10);
+            mainLayout.setCenter(grid);
+            addListenersToTiles();
+            grid.changeAllTileSizes(40);
+            stage.setWidth(320);
+            stage.setHeight(342);
+        });
+        sixteenBySixteen.setOnAction(e->{
+            grid = new Grid(16,40);
+            grid.changeAllTileSizes(30);
 
-        mainLayout.setCenter(grid);
+            mainLayout.setCenter(grid);
+            addListenersToTiles();
+
+            stage.setWidth(480);
+            stage.setHeight(497);
+        });
+        twentyFourByTwentyFour.setOnAction(e->{
+            grid = new Grid(24,100);
+            grid.changeAllTileSizes(30);
+            mainLayout.setCenter(grid);
+            addListenersToTiles();
+
+            stage.setWidth(720);
+            stage.setHeight(720);
+        });
+
         mainLayout.setTop(menuBar);
-
-        mainScene = new Scene(mainLayout);
-        mainScene.getStylesheets().add("assets/styles.css");
-    }
-    void intializeStage(Stage stage){
-        stage.setTitle("Minesweeper");
-        stage.setResizable(false);
-        stage.setScene(mainScene);
-        stage.show();
     }
     public static void main(String[] args) {
         launch(args);

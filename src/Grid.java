@@ -148,7 +148,7 @@ public class Grid extends GridPane {
             winPrompt.setHeaderText("Congratulations");
             winPrompt.setContentText("You Win!");
             winPrompt.showAndWait();
-            newGame();
+            gameOver();
         }
     }
 
@@ -156,8 +156,9 @@ public class Grid extends GridPane {
         for (int i = 0;i < gridSize;i++){
             for (int j = 0;j < gridSize;j++){
                 Tile currentTile = getTileAtPosition(i,j);
-                if (currentTile.getState().equals(State.FLAGGED))
+                if (currentTile.getState().equals(State.FLAGGED) && !currentTile.isBomb()) {
                     currentTile.toggleFlag();
+                }
                 currentTile.displayTile();
                 currentTile.setState(State.OPENED);
             }
@@ -219,7 +220,13 @@ public class Grid extends GridPane {
             }
         }
     }
-
+    void changeAllTileSizes(int newSize){
+        for (int i = 0;i < gridSize;i++){
+            for (int j = 0;j<gridSize;j++){
+                getTileAtPosition(i,j).changeTileSize(newSize);
+            }
+        }
+    }
     void printGrid(){
         for (int i = 0; i < gridSize;i++ ){
             for (int j = 0;j<gridSize;j++){
