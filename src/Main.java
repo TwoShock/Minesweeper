@@ -1,6 +1,7 @@
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -31,8 +32,6 @@ public class Main extends Application {
         });
 
         addListenersToTiles();
-        System.out.println(primaryStage.getWidth());
-        System.out.println(primaryStage.getHeight());
         hookUpMenus(primaryStage);
     }
     void addListenersToTiles(){
@@ -65,23 +64,16 @@ public class Main extends Application {
 
         Menu newGame = new Menu("New");
         Menu help = new Menu("Help");
-        Menu about = new Menu("About");
 
-        MenuItem developerMenu = new Menu("Developers");
-
-        MenuItem rules = new MenuItem("Rules");
         MenuItem eightByEight = new MenuItem("8 x 8");
         MenuItem sixteenBySixteen = new MenuItem("16 x 16");
         MenuItem twentyFourByTwentyFour = new MenuItem("24 x 24");
 
-        menuBar.getMenus().add(newGame);
-        menuBar.getMenus().add(help);
-        menuBar.getMenus().add(about);
+        MenuItem rules = new MenuItem("Rules");
 
-        about.getItems().add(developerMenu);
-
-        help.getItems().add(rules);
         newGame.getItems().addAll(eightByEight,sixteenBySixteen,twentyFourByTwentyFour);
+        help.getItems().addAll(rules);
+
         eightByEight.setOnAction(e->{
             grid = new Grid(8,10);
             mainLayout.setCenter(grid);
@@ -109,7 +101,20 @@ public class Main extends Application {
             stage.setWidth(720);
             stage.setHeight(720);
         });
+        rules.setOnAction(event -> {
+            Alert howToPlay = new Alert(Alert.AlertType.INFORMATION);
+            howToPlay.setTitle("Rules");
+            howToPlay.setHeaderText("How to Play:");
+            howToPlay.setContentText("1) First click is always safe.\n\n2) After the first click you will notice" +
+                    " diffrent numbers these numbers indicate the number of bombs in the adjacent tiles.\n\n" +
+                    "3) Flag tiles you know are bombs.\n\n" +
+                    "4) You win the game by opening all non bomb tiles.\n\n" +
+                    "5) You lose if you press on a tile which is a bomb.");
 
+            howToPlay.showAndWait();
+
+        });
+        menuBar.getMenus().addAll(newGame,help);
         mainLayout.setTop(menuBar);
     }
     public static void main(String[] args) {
