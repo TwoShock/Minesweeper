@@ -5,3 +5,6 @@
 <img src = "minesweeper.png" width = "320" height = "380" hspace = "45"/>
 <img src = "lost.png" width = "320" height = "380"/>
 </p>
+<p>
+  Download <a href = "minesweeper.jar">minesweeper</a> JAR file.
+</p>
