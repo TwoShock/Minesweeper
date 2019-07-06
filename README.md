@@ -6,5 +6,8 @@
 <img src = "lost.png" width = "320" height = "380"/>
 </p>
 <p>
-  Download <a href = "minesweeper.jar">minesweeper</a> JAR file.
+  Download <a href = "https://github.com/TwoShock/Minesweeper/blob/master/MineSweeper.jar">minesweeper</a> JAR file.
+</p>
+<p>
+  Please note you will need to have Java version 8 or higher running on your system to be able to play the game.
 </p>
